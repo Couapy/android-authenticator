@@ -1,5 +1,6 @@
 package fr.utt.if26.mmarchan.room.daos;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -8,23 +9,25 @@ import androidx.room.Update;
 
 import java.util.List;
 
-import fr.utt.if26.mmarchan.room.models.AuthIssuer;
-import fr.utt.if26.mmarchan.room.models.Section;
+import fr.utt.if26.mmarchan.room.entities.AuthIssuerEntity;
 
 @Dao
 public interface AuthIssuerDAO {
     @Insert
-    public void insert(AuthIssuer issuer);
+    public void insert(AuthIssuerEntity issuer);
 
     @Insert
-    public void insertAll(AuthIssuer... issuers);
+    public void insertAll(AuthIssuerEntity... issuers);
 
     @Update
-    public void update(AuthIssuer issuer);
+    public void update(AuthIssuerEntity issuer);
 
     @Delete
-    public void delete(AuthIssuer issuer);
+    public void delete(AuthIssuerEntity issuer);
+
+    @Query("DELETE FROM auth_issuers")
+    public void deleteAll();
 
     @Query("SELECT * FROM auth_issuers")
-    public List<AuthIssuer> getAll();
+    public LiveData<List<AuthIssuerEntity>> getAll();
 }
