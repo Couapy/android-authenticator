@@ -35,4 +35,19 @@
         android:text="Save"
         android:layout_marginTop="10dp" />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="Delete this section"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/section_edit_button_delete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="#F44336"
+        android:text="Delete" />
+
 </LinearLayout>

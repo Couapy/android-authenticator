@@ -39,7 +39,7 @@ public class SectionListAdapter extends ListAdapter<SectionEntity, SectionListAd
     }
 
     public class SectionListClickListener {
-        public boolean onLongClick(int sectionId) {
+        public boolean onClick(int sectionId) {
             Intent intent = new Intent(context, EditSectionActivity.class);
             intent.putExtra("sectionId", sectionId);
             context.startActivity(intent);

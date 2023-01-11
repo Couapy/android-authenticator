@@ -49,4 +49,10 @@ public class SectionRepository {
         });
     }
 
+    public void update(SectionEntity section) {
+        AppDatabase.databaseWriteExecutor.execute(() -> {
+            mSectionDAO.update(section);
+        });
+    }
+
 }
