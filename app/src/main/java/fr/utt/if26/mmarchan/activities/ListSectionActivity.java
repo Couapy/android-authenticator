@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -16,6 +17,8 @@ import fr.utt.if26.mmarchan.databinding.ActivityListSectionBinding;
 import fr.utt.if26.mmarchan.room.viewmodels.SectionViewModel;
 
 public class ListSectionActivity extends AppCompatActivity {
+
+
 
     private ActivityListSectionBinding binding;
 
@@ -31,7 +34,6 @@ public class ListSectionActivity extends AppCompatActivity {
         });
         binding.setAdapter(adapter);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
