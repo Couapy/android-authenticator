@@ -39,4 +39,12 @@ public class AuthIssuerRepository {
         });
     }
 
+    public AuthIssuerEntity getAuthIssuerById(int authIssuerId) {
+        return mAuthIssuerDAO.getById(authIssuerId);
+    }
+
+    public void deleteAuthIssuer(AuthIssuerEntity issuer) {
+        mAuthIssuerDAO.delete(issuer);
+    }
+
 }

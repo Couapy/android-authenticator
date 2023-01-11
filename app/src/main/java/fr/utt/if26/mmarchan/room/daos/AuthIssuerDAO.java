@@ -30,4 +30,7 @@ public interface AuthIssuerDAO {
 
     @Query("SELECT * FROM auth_issuers")
     public LiveData<List<AuthIssuerEntity>> getAll();
+
+    @Query("SELECT * FROM auth_issuers WHERE id = :id")
+    public AuthIssuerEntity getById(int id);
 }

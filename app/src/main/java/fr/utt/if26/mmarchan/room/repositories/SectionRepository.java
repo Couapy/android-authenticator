@@ -39,4 +39,14 @@ public class SectionRepository {
         });
     }
 
+    public SectionEntity getSectionById(int id) {
+        return mSectionDAO.getById(id);
+    }
+
+    public void deleteSection(SectionEntity section) {
+        AppDatabase.databaseWriteExecutor.execute(() -> {
+            mSectionDAO.delete(section);
+        });
+    }
+
 }
