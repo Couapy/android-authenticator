@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/main_menu_add_section"
+        android:icon="@android:drawable/ic_menu_add"
+        android:title="Add section" />
+    <item
+        android:id="@+id/main_menu_add_code"
+        android:icon="@android:drawable/ic_menu_add"
+        android:title="Add code" />
+    <item
+        android:id="@+id/main_menu_scan_qr_code"
+        android:icon="@drawable/ic_menu_camera"
+        android:title="Scan QR Code" />
+</menu>
