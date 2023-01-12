@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
     <data>
         <variable
             name="handler"
             type="fr.utt.if26.mmarchan.activities.SigningActivity" />
     </data>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -30,23 +31,25 @@
             android:id="@+id/signin_input_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
             android:ems="10"
             android:hint="Workspace password"
-            android:inputType="textPassword"
-            android:layout_marginBottom="10dp" />
+            android:inputType="textPassword" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Signin"
-            android:onClick="@{() -> handler.onSubmit()}"/>
+            android:onClick="@{() -> handler.onSubmit()}"
+            android:text="Signin" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:backgroundTint="#00BCD4"
-            android:text="Create new workspace"
-            android:onClick="@{() -> handler.onSignup()}"/>
+            android:onClick="@{() -> handler.onSignup()}"
+            android:text="Create new workspace" />
+
     </LinearLayout>
+
 </layout>

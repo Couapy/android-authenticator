@@ -17,6 +17,11 @@ import fr.utt.if26.mmarchan.room.daos.SectionDAO;
 import fr.utt.if26.mmarchan.room.entities.AuthIssuerEntity;
 import fr.utt.if26.mmarchan.room.entities.SectionEntity;
 
+/**
+ * Main database of the application.
+ * Load a different database depending on the current workspace.
+ * Note: Databases are secured by a password.
+ */
 @Database(entities = {SectionEntity.class, AuthIssuerEntity.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase INSTANCE = null;
@@ -28,6 +33,13 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public abstract AuthIssuerDAO authIssuerDAO();
 
+    /**
+     * Connect to a database using password.
+     *
+     * @param context      application context
+     * @param databaseName database to connect
+     * @param password     database password
+     */
     public static void useDatabase(Context context, String databaseName, String password) {
         INSTANCE = Room
                 .databaseBuilder(context, AppDatabase.class, databaseName)
@@ -36,9 +48,14 @@ public abstract class AppDatabase extends RoomDatabase {
                 .build();
     }
 
+    /**
+     * Singleton design pattern, connect to the database if not already the case.
+     * It could use the default database, but should never happened because useDatabase is always
+     * called, in main activity, before this method.
+     */
     public static AppDatabase getInstance(Context context) {
         if (INSTANCE == null) {
-            // Should never happened because useDatabase is always called, in main activity, before this
+            //
             useDatabase(context, "default", "password");
         }
         return INSTANCE;

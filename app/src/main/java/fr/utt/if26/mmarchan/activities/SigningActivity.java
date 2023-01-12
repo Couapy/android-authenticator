@@ -28,11 +28,16 @@ public class SigningActivity extends AppCompatActivity {
         binding.setHandler(this);
     }
 
+    /**
+     * Handle form submission, and open the app if the password if recognized.
+     *
+     * @return the success
+     */
     public boolean onSubmit() {
         EditText input = findViewById(R.id.signin_input_password);
         String password = input.getText().toString();
         String hash = PasswordUtil.getHash(password);
-        
+
         WorkspaceEntity workspace = repository.getWorkspaceByPassword(hash);
         if (workspace == null) {
             Toast.makeText(this, "Wrong password", Toast.LENGTH_SHORT).show();
@@ -44,10 +49,16 @@ public class SigningActivity extends AppCompatActivity {
         intent.putExtra("password", password);
         startActivity(intent);
         finish();
-        
+
         return true;
     }
 
+    /**
+     * Handle the signup onClick event.
+     * It opens the SignupActivity to register a new workspace.
+     *
+     * @return true
+     */
     public boolean onSignup() {
         startActivity(new Intent(SigningActivity.this, SignupActivity.class));
         return true;

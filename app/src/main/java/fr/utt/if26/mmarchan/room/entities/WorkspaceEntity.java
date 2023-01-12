@@ -4,6 +4,9 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+/**
+ * Code provider workspace. Represent different encrypted databases.
+ */
 @Entity(tableName = "workspaces")
 public class WorkspaceEntity {
     @PrimaryKey(autoGenerate = true)
@@ -16,7 +19,10 @@ public class WorkspaceEntity {
     @ColumnInfo(name = "database")
     public String database;
 
-    /* Password hash */
+    /**
+     * Password hash.
+     * @see fr.utt.if26.mmarchan.utils.PasswordUtil
+     */
     @ColumnInfo(name = "password")
     public String password;
 

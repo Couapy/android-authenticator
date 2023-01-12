@@ -54,6 +54,13 @@ public class SectionListAdapter extends ListAdapter<SectionEntity, SectionListAd
         return new SectionHolder(binding);
     }
 
+    /**
+     * Bind section and click handler (this adapter) to the fragment using data-binding.
+     * Note: it also refresh all children (code provider fragments) before display issuers information.
+     *
+     * @param holder
+     * @param position
+     */
     @Override
     public void onBindViewHolder(SectionHolder holder, int position) {
         SectionEntity section = getItem(position);
@@ -81,6 +88,12 @@ public class SectionListAdapter extends ListAdapter<SectionEntity, SectionListAd
         handler.post(runnable);
     }
 
+    /**
+     * Handle the click action on the section: it just open the edit section activity.
+     *
+     * @param sectionId
+     * @return
+     */
     public boolean onClick(int sectionId) {
         Intent intent = new Intent(context, EditSectionActivity.class);
         intent.putExtra("sectionId", sectionId);

@@ -44,6 +44,9 @@ public class DeleteSectionActivity extends AppCompatActivity {
         button.setOnClickListener(v -> onDelete());
     }
 
+    /**
+     * Handle the deletion confirmation: delete the entity from the database.
+     */
     private void onDelete() {
         sectionRepository.deleteSection(section);
         Toast.makeText(this, "The section has been successfully deleted.", Toast.LENGTH_SHORT).show();

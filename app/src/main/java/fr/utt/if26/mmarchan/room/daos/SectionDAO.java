@@ -16,8 +16,11 @@ public interface SectionDAO {
     @Insert
     public void insert(SectionEntity section);
 
-    @Insert
-    public void insertAll(SectionEntity... sections);
+    @Query("SELECT * FROM sections WHERE id = :id")
+    public SectionEntity getById(int id);
+
+    @Query("SELECT * FROM sections")
+    public LiveData<List<SectionEntity>> getAll();
 
     @Update
     public void update(SectionEntity section);
@@ -27,10 +30,4 @@ public interface SectionDAO {
 
     @Query("DELETE FROM sections")
     public void deleteAll();
-
-    @Query("SELECT * FROM sections WHERE id = :id")
-    public SectionEntity getById(int id);
-
-    @Query("SELECT * FROM sections")
-    public LiveData<List<SectionEntity>> getAll();
 }

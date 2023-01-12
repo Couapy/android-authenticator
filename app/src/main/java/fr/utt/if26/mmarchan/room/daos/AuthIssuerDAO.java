@@ -16,18 +16,6 @@ public interface AuthIssuerDAO {
     @Insert
     public void insert(AuthIssuerEntity issuer);
 
-    @Insert
-    public void insertAll(AuthIssuerEntity... issuers);
-
-    @Update
-    public void update(AuthIssuerEntity issuer);
-
-    @Delete
-    public void delete(AuthIssuerEntity issuer);
-
-    @Query("DELETE FROM auth_issuers")
-    public void deleteAll();
-
     @Query("SELECT * FROM auth_issuers")
     public LiveData<List<AuthIssuerEntity>> getAll();
 
@@ -36,4 +24,10 @@ public interface AuthIssuerDAO {
 
     @Query("SELECT * FROM auth_issuers WHERE sectionId = :sectionId")
     public LiveData<List<AuthIssuerEntity>> getBySection(int sectionId);
+
+    @Update
+    public void update(AuthIssuerEntity issuer);
+
+    @Delete
+    public void delete(AuthIssuerEntity issuer);
 }

@@ -21,6 +21,9 @@ import fr.utt.if26.mmarchan.databinding.FragmentAuthIssuerItemBinding;
 import fr.utt.if26.mmarchan.room.entities.AuthIssuerEntity;
 import fr.utt.if26.mmarchan.room.repositories.AuthIssuerRepository;
 
+/**
+ * Adapter for RecyclerView using fragment_auth_issuer_item layout.
+ */
 public class AuthIssuerListAdapter extends ListAdapter<AuthIssuerEntity, AuthIssuerListAdapter.AuthIssuerHolder> {
 
     public class AuthIssuerHolder extends RecyclerView.ViewHolder {
@@ -56,10 +59,17 @@ public class AuthIssuerListAdapter extends ListAdapter<AuthIssuerEntity, AuthIss
     @Override
     public AuthIssuerHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        /* Note: Using FragmentAuthIssuerItemBinding defines we are using the fragment_auth_issuer_item layout */
         FragmentAuthIssuerItemBinding binding = FragmentAuthIssuerItemBinding.inflate(inflater, parent, false);
         return new AuthIssuerHolder(binding);
     }
 
+    /**
+     * Bind issuer and click handler (this adapter) to the fragment using data-binding.
+     * Note: it also refresh the code before display the issuer informations.
+     *
+     * @param position
+     */
     @Override
     public void onBindViewHolder(AuthIssuerHolder holder, int position) {
         AuthIssuerEntity issuer = getItem(position);
@@ -69,6 +79,12 @@ public class AuthIssuerListAdapter extends ListAdapter<AuthIssuerEntity, AuthIss
         holder.binding.executePendingBindings();
     }
 
+    /**
+     * Handle the click on the item: it just copies the current code to the clipboard.
+     *
+     * @param issuerId issuer identifier
+     * @return true
+     */
     public boolean onClick(int issuerId) {
         AuthIssuerEntity issuer = repository.getAuthIssuerById(issuerId);
         issuer.refreshCode();
@@ -81,6 +97,12 @@ public class AuthIssuerListAdapter extends ListAdapter<AuthIssuerEntity, AuthIss
         return true;
     }
 
+    /**
+     * Handle the long click on the item: it opens the delete code activity.
+     *
+     * @param issuerId issuer identifier
+     * @return true
+     */
     public boolean onLongClick(int issuerId) {
         Intent intent = new Intent(context, DeleteCodeActivity.class);
         intent.putExtra("issuerId", issuerId);

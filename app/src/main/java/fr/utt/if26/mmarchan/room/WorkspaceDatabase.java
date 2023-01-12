@@ -18,6 +18,9 @@ import fr.utt.if26.mmarchan.room.entities.AuthIssuerEntity;
 import fr.utt.if26.mmarchan.room.entities.SectionEntity;
 import fr.utt.if26.mmarchan.room.entities.WorkspaceEntity;
 
+/**
+ * Database that manage all workspaces.
+ */
 @Database(entities = {WorkspaceEntity.class}, version = 1)
 public abstract class WorkspaceDatabase extends RoomDatabase {
     private static WorkspaceDatabase INSTANCE = null;
@@ -27,12 +30,12 @@ public abstract class WorkspaceDatabase extends RoomDatabase {
 
     public abstract WorkspaceDAO workspaceDAO();
 
+    /**
+     * Singleton design pattern, connect to the database if not already the case.
+     */
     public static WorkspaceDatabase getInstance(Context context) {
         if (INSTANCE == null) {
-            INSTANCE = Room
-                .databaseBuilder(context, WorkspaceDatabase.class, "workspaces")
-                .allowMainThreadQueries()
-                .build();
+            INSTANCE = Room.databaseBuilder(context, WorkspaceDatabase.class, "workspaces").allowMainThreadQueries().build();
         }
         return INSTANCE;
     }

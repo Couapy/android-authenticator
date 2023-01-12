@@ -44,6 +44,9 @@ public class DeleteWorkspaceActivity extends AppCompatActivity {
         button.setOnClickListener(v -> onDelete());
     }
 
+    /**
+     * Handle the deletion confirmation: delete the entity from the database.
+     */
     private void onDelete() {
         workspaceRepository.deleteWorkspace(workspace);
         Toast.makeText(this, "The workspace has been successfully deleted.", Toast.LENGTH_SHORT).show();

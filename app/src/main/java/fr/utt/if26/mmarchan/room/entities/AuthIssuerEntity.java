@@ -1,7 +1,5 @@
 package fr.utt.if26.mmarchan.room.entities;
 
-import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -16,6 +14,11 @@ import java.util.Calendar;
 
 import de.taimos.totp.TOTP;
 
+/**
+ * Database entity for the code provider.
+ * It provide TOTP code from the token by refreshing the instance using `refreshCode`.
+ * Note: it depends on a section (using foreign key)
+ */
 @Entity(
         tableName = "auth_issuers",
         foreignKeys = @ForeignKey(

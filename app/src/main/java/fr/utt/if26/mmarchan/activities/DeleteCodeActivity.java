@@ -44,6 +44,9 @@ public class DeleteCodeActivity extends AppCompatActivity {
         button.setOnClickListener(v -> onDelete());
     }
 
+    /**
+     * Handle the deletion confirmation: delete the entity from the database.
+     */
     private void onDelete() {
         authIssuerRepository.deleteAuthIssuer(authIssuer);
         Toast.makeText(this, "The issuer has been successfully deleted.", Toast.LENGTH_SHORT).show();

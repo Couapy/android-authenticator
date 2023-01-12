@@ -51,7 +51,10 @@ public class AddCodeActivity extends AppCompatActivity {
         inputSection = findViewById(R.id.code_add_input_section_spinner);
         button = findViewById(R.id.code_add_button);
 
-        // Create my watchers
+        /**
+         * Create my watchers.
+         * Disable the button if there are no provider name, valid token, or selected section.
+         */
         TextWatcher textWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -89,7 +92,7 @@ public class AddCodeActivity extends AppCompatActivity {
             }
         };
 
-        // Bind live data to the spinner
+        // Bind live data - sections - to the spinner
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, sectionList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         inputSection.setAdapter(adapter);
@@ -115,6 +118,9 @@ public class AddCodeActivity extends AppCompatActivity {
         button.setOnClickListener(v -> onSubmit());
     }
 
+    /**
+     * Handle the form submission and create a new code provider.
+     */
     private void onSubmit() {
         AuthIssuerEntity issuer = new AuthIssuerEntity();
         issuer.issuer = inputProvider.getText().toString();

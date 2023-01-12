@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
@@ -53,6 +52,10 @@ public class ListSectionActivity extends AppCompatActivity {
         binding.sectionListRecyclerView.setAdapter(adapter);
     }
 
+    /**
+     * Fetch current workspace information.
+     * Then connect to the right database using password.
+     */
     private void setupDatabaseAccess() {
         int workspaceId = getIntent().getIntExtra("workspaceId", 0);
         workspace = repository.getWorkspaceById(workspaceId);
@@ -60,6 +63,10 @@ public class ListSectionActivity extends AppCompatActivity {
         AppDatabase.useDatabase(this, workspace.database, password);
     }
 
+    /**
+     * Configuring the QR Code Scanner and the success callback.
+     * When scanning a correct QR Code, it opens the AddCodeActivity with all information filled.
+     */
     private void setupQRCodeScanner() {
         barcodeLauncher = registerForActivityResult(
                 new ScanContract(),
@@ -127,24 +134,39 @@ public class ListSectionActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Menu option: opens the AddSectionActivity activity.
+     */
     private void addSection() {
         startActivity(new Intent(ListSectionActivity.this, AddSectionActivity.class));
     }
 
+    /**
+     * Menu option: opens the AddCodeActivity activity.
+     */
     private void addCode() {
         startActivity(new Intent(ListSectionActivity.this, AddCodeActivity.class));
     }
 
+    /**
+     * Menu option: launch the barcode scanner activity.
+     */
     private void scanQRCode() {
         barcodeLauncher.launch(barcodeOptions);
     }
 
+    /**
+     * Menu option: opens the DeleteWorkspaceActivity activity.
+     */
     private void deleteWorkspace() {
         Intent intent = new Intent(ListSectionActivity.this, DeleteWorkspaceActivity.class);
         intent.putExtra("workspaceId", workspace.id);
         startActivityForResult(intent, 0);
     }
 
+    /**
+     * Handle the activity result of the workspace deletion : restart the application.
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 0) {
