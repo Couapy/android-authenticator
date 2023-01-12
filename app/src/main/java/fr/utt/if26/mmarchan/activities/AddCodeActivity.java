@@ -15,8 +15,12 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import org.apache.commons.codec.binary.Base32;
+import org.apache.commons.codec.binary.Hex;
+
 import java.util.ArrayList;
 
+import de.taimos.totp.TOTP;
 import fr.utt.if26.mmarchan.R;
 import fr.utt.if26.mmarchan.room.entities.AuthIssuerEntity;
 import fr.utt.if26.mmarchan.room.entities.SectionEntity;
@@ -56,9 +60,17 @@ public class AddCodeActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                int lengthProvider = inputProvider.getText().length();
-                int lengthToken = inputToken.getText().length();
-                button.setEnabled(lengthProvider > 0 && lengthToken > 0);
+                final int lengthProvider = inputProvider.getText().length();
+                boolean validToken = true;
+                try {
+                    byte[] bytes = (new Base32()).decode(inputToken.getText().toString());
+                    TOTP.getOTP(Hex.encodeHexString(bytes));
+                    inputToken.setError(null);
+                } catch (Exception e) {
+                    validToken = false;
+                    inputToken.setError("Invalid token");
+                }
+                button.setEnabled(lengthProvider > 0 && validToken);
             }
         };
         AdapterView.OnItemSelectedListener spinnerListener = new AdapterView.OnItemSelectedListener() {
