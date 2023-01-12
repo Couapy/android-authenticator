@@ -2,12 +2,13 @@ package fr.utt.if26.mmarchan.room;
 
 import android.content.Context;
 
-import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
-import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import net.sqlcipher.database.SupportFactory;
+
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -27,32 +28,18 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public abstract AuthIssuerDAO authIssuerDAO();
 
+    public static void useDatabase(Context context, String databaseName, String password) {
+        INSTANCE = Room
+                .databaseBuilder(context, AppDatabase.class, databaseName)
+                .openHelperFactory(new SupportFactory(password.getBytes(StandardCharsets.UTF_8)))
+                .allowMainThreadQueries()
+                .build();
+    }
+
     public static AppDatabase getInstance(Context context) {
         if (INSTANCE == null) {
-            INSTANCE = Room
-                .databaseBuilder(context, AppDatabase.class, "database")
-                .allowMainThreadQueries()
-                // recreate the database if necessary
-                .fallbackToDestructiveMigration()
-                    .addCallback(new Callback() {
-                        @Override
-                        public void onCreate(@NonNull SupportSQLiteDatabase db) {
-                            super.onCreate(db);
-
-                            databaseWriteExecutor.execute(() -> {
-                                SectionDAO sectionDAO = INSTANCE.sectionDAO();
-                                sectionDAO.insert(new SectionEntity("Code repositories"));
-                                sectionDAO.insert(new SectionEntity("Package repositories"));
-
-                                AuthIssuerDAO issuerDAO = INSTANCE.authIssuerDAO();
-                                issuerDAO.deleteAll();
-                                issuerDAO.insert(new AuthIssuerEntity("Github", "Couapy", "JBSWY3DPEHPK3PXP", 1));
-                                issuerDAO.insert(new AuthIssuerEntity("Gitlab", "Couapy", "JBSWY3DPEHPK3PXP", 1));
-                                issuerDAO.insert(new AuthIssuerEntity("Pypi", "Couapy", "JBSWY3DPEHPK3PXP", 2));
-                            });
-                        }
-                    })
-                .build();
+            // Should never happened because useDatabase is always called, in main activity, before this
+            useDatabase(context, "default", "password");
         }
         return INSTANCE;
     }

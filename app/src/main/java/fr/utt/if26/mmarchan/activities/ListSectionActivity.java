@@ -9,20 +9,30 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import fr.utt.if26.mmarchan.R;
 import fr.utt.if26.mmarchan.activities.adapters.SectionListAdapter;
 import fr.utt.if26.mmarchan.databinding.ActivityListSectionBinding;
+import fr.utt.if26.mmarchan.room.AppDatabase;
+import fr.utt.if26.mmarchan.room.entities.WorkspaceEntity;
+import fr.utt.if26.mmarchan.room.repositories.WorkspaceRepository;
 import fr.utt.if26.mmarchan.room.viewmodels.SectionViewModel;
 
 public class ListSectionActivity extends AppCompatActivity {
 
     private ActivityListSectionBinding binding;
+    private WorkspaceRepository repository;
+    private WorkspaceEntity workspace;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_list_section);
+        repository = new WorkspaceRepository(getApplication());
+
+        setupDatabaseAccess();
+        setTitle("Workspace: " + workspace.name);
 
         SectionViewModel viewModel = new ViewModelProvider(this).get(SectionViewModel.class);
         final SectionListAdapter adapter = new SectionListAdapter(new SectionListAdapter.SectionDiff(), this);
@@ -30,6 +40,13 @@ public class ListSectionActivity extends AppCompatActivity {
             adapter.submitList(sections);
         });
         binding.sectionListRecyclerView.setAdapter(adapter);
+    }
+
+    private void setupDatabaseAccess() {
+        int workspaceId = getIntent().getIntExtra("workspaceId", 0);
+        workspace = repository.getWorkspaceById(workspaceId);
+        String password = getIntent().getStringExtra("password");
+        AppDatabase.useDatabase(this, workspace.database, password);
     }
 
     @Override
@@ -51,6 +68,9 @@ public class ListSectionActivity extends AppCompatActivity {
             case R.id.main_menu_scan_qr_code:
                 scanQRCode();
                 return true;
+            case R.id.main_menu_delete_workspace:
+                deleteWorkspace();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -65,16 +85,23 @@ public class ListSectionActivity extends AppCompatActivity {
     }
 
     private void scanQRCode() {
-        //Intent intent = new Intent(MainActivity.this, DeleteSectionActivity.class);
-        //intent.putExtra("sectionId", 3);
-        //startActivity(intent);
+        /* TODO */
+        Toast.makeText(this, "TODO", Toast.LENGTH_SHORT).show();
+    }
+    
+    private void deleteWorkspace() {
+        Intent intent = new Intent(ListSectionActivity.this, DeleteWorkspaceActivity.class);
+        intent.putExtra("workspaceId", workspace.id);
+        startActivityForResult(intent, 0);
+    }
 
-        // Intent intent = new Intent(MainActivity.this, DeleteCodeActivity.class);
-        // intent.putExtra("authIssuerId", 5);
-        // startActivity(intent);
-
-        Intent intent = new Intent(ListSectionActivity.this, EditSectionActivity.class);
-        intent.putExtra("sectionId", 4);
-        startActivity(intent);
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 0) {
+            startActivity(new Intent(ListSectionActivity.this, SigningActivity.class));
+            finish();
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 }

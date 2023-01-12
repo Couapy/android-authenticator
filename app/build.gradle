@@ -43,6 +43,10 @@ dependencies {
     // https://mavenlibs.com/maven/dependency/de.taimos/totp
     implementation group: 'de.taimos', name: 'totp', version: '1.0'
 
+    // https://github.com/sqlcipher/android-database-sqlcipher#using-sqlcipher-for-android-with-room
+    implementation "net.zetetic:android-database-sqlcipher:4.5.3"
+    implementation "androidx.sqlite:sqlite:2.1.0"
+
     implementation group: 'com.google.zxing', name: 'core', version: '3.5.1'
 
     implementation 'androidx.appcompat:appcompat:1.5.1'

@@ -12,4 +12,8 @@
         android:id="@+id/main_menu_scan_qr_code"
         android:icon="@drawable/ic_menu_camera"
         android:title="Scan QR Code" />
+    <item
+        android:id="@+id/main_menu_delete_workspace"
+        android:icon="@android:drawable/ic_menu_delete"
+        android:title="Delete workspace" />
 </menu>
