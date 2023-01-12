@@ -37,7 +37,7 @@ public class AddCodeActivity extends AppCompatActivity {
 
     ArrayList<String> sectionList = new ArrayList<>();
     ArrayList<Integer> sectionIdList = new ArrayList<>();
-    Integer selectedSectionId = 1;
+    Integer selectedSectionId = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +70,7 @@ public class AddCodeActivity extends AppCompatActivity {
                     validToken = false;
                     inputToken.setError("Invalid token");
                 }
-                button.setEnabled(lengthProvider > 0 && validToken);
+                button.setEnabled(lengthProvider > 0 && validToken && selectedSectionId > 0);
             }
         };
         AdapterView.OnItemSelectedListener spinnerListener = new AdapterView.OnItemSelectedListener() {
