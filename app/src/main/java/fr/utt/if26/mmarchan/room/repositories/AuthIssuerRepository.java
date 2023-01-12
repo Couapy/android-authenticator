@@ -47,4 +47,7 @@ public class AuthIssuerRepository {
         mAuthIssuerDAO.delete(issuer);
     }
 
+    public LiveData<List<AuthIssuerEntity>> getIssuersBySection(int sectionId) {
+        return mAuthIssuerDAO.getBySection(sectionId);
+    }
 }

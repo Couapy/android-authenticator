@@ -1,11 +1,13 @@
 package fr.utt.if26.mmarchan.activities.adapters;
 
-import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import fr.utt.if26.mmarchan.activities.EditSectionActivity;
 import fr.utt.if26.mmarchan.databinding.FragmentSectionItemBinding;
 import fr.utt.if26.mmarchan.room.entities.SectionEntity;
+import fr.utt.if26.mmarchan.room.viewmodels.AuthIssuerViewModel;
 
 public class SectionListAdapter extends ListAdapter<SectionEntity, SectionListAdapter.SectionHolder> {
 
@@ -22,7 +25,6 @@ public class SectionListAdapter extends ListAdapter<SectionEntity, SectionListAd
         public SectionHolder(@NonNull FragmentSectionItemBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
-
         }
     }
 
@@ -38,22 +40,11 @@ public class SectionListAdapter extends ListAdapter<SectionEntity, SectionListAd
         }
     }
 
-    public class SectionListClickListener {
-        public boolean onClick(int sectionId) {
-            Intent intent = new Intent(context, EditSectionActivity.class);
-            intent.putExtra("sectionId", sectionId);
-            context.startActivity(intent);
-            return true;
-        }
-    }
+    private AppCompatActivity context;
 
-    private Context context;
-    private final SectionListClickListener handler;
-
-    public SectionListAdapter(@NonNull DiffUtil.ItemCallback<SectionEntity> diffCallback, Context ctx) {
+    public SectionListAdapter(@NonNull DiffUtil.ItemCallback<SectionEntity> diffCallback, AppCompatActivity ctx) {
         super(diffCallback);
         context = ctx;
-        handler = new SectionListClickListener();
     }
 
     @Override
@@ -66,9 +57,35 @@ public class SectionListAdapter extends ListAdapter<SectionEntity, SectionListAd
     @Override
     public void onBindViewHolder(SectionHolder holder, int position) {
         SectionEntity section = getItem(position);
+
+        AuthIssuerViewModel viewModel = new ViewModelProvider(context).get(AuthIssuerViewModel.class);
+        final AuthIssuerListAdapter childAdapter = new AuthIssuerListAdapter(new AuthIssuerListAdapter.AuthIssuerDiff(), context);
+        viewModel.getIssuersBySection(section.id).observe(context, issuers -> {
+            childAdapter.submitList(issuers);
+        });
+
         holder.binding.setSection(section);
-        holder.binding.setHandler(handler);
+        holder.binding.setHandler(this);
+        holder.binding.sectionItemRecyclerView.setAdapter(childAdapter);
         holder.binding.executePendingBindings();
+
+        Handler handler = new Handler();
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                childAdapter.notifyDataSetChanged();
+                handler.postDelayed(this, 1000);
+            }
+        };
+
+        handler.post(runnable);
+    }
+
+    public boolean onClick(int sectionId) {
+        Intent intent = new Intent(context, EditSectionActivity.class);
+        intent.putExtra("sectionId", sectionId);
+        context.startActivity(intent);
+        return true;
     }
 
 }

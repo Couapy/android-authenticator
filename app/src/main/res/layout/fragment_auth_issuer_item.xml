@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="issuer"
+            type="fr.utt.if26.mmarchan.room.entities.AuthIssuerEntity" />
+
+        <variable
+            name="handler"
+            type="fr.utt.if26.mmarchan.activities.adapters.AuthIssuerListAdapter" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:longClickable="true"
+        android:onClick="@{() -> handler.onClick(issuer.id)}"
+        android:onLongClick="@{() -> handler.onLongClick(issuer.id)}">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/issuer_item_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text='@{issuer.user.length() == 0 ? issuer.issuer : issuer.issuer + " (" + issuer.user + ")"}'
+                android:textColor="#2196F3"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/issuer_item_code_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@{issuer.code}"
+                android:textSize="24sp" />
+
+        </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/issuer_item_progress_bar"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.4"
+            android:indeterminate="false"
+            android:max="30"
+            android:progress="@{issuer.remainingTime}"
+            android:progressTint="#2196F3" />
+
+    </LinearLayout>
+
+</layout>

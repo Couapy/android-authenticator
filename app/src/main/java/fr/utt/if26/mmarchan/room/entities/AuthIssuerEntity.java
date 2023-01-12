@@ -1,13 +1,18 @@
 package fr.utt.if26.mmarchan.room.entities;
 
+import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import org.apache.commons.codec.binary.Base32;
 import org.apache.commons.codec.binary.Hex;
+
+import java.util.Calendar;
 
 import de.taimos.totp.TOTP;
 
@@ -41,6 +46,12 @@ public class AuthIssuerEntity {
     @ColumnInfo(name = "sectionId")
     public int sectionId;
 
+    @Ignore
+    public int remainingTime = 0;
+
+    @Ignore
+    public String code = "000000";
+
     public AuthIssuerEntity() {
         this.issuer = "Issuer";
         this.user = null;
@@ -54,8 +65,17 @@ public class AuthIssuerEntity {
         this.sectionId = sectionId;
     }
 
-    public String getTOTPCode() {
-        byte[] bytes = (new Base32()).decode(this.secret);
-        return TOTP.getOTP(Hex.encodeHexString(bytes));
+    public void refreshCode() {
+        // Remaining time
+        remainingTime = 30 - (Calendar.getInstance().get(Calendar.SECOND) % 30);
+
+        // TOTP code
+        try {
+            byte[] bytes = (new Base32()).decode(this.secret);
+            code = TOTP.getOTP(Hex.encodeHexString(bytes));
+        } catch (Exception e) {
+            code = "Invalid token";
+        }
     }
+
 }

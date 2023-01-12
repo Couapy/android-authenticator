@@ -22,7 +22,9 @@ public class AuthIssuerViewModel extends AndroidViewModel {
         issuers = mRepository.getAllAuthIssuers();
     }
 
-    public LiveData<List<AuthIssuerEntity>> getAllissuers() { return issuers; }
-
     public void insert(AuthIssuerEntity issuer) { mRepository.insertIssuer(issuer); }
+
+    public LiveData<List<AuthIssuerEntity>> getIssuersBySection(int sectionId) {
+        return mRepository.getIssuersBySection(sectionId);
+    }
 }

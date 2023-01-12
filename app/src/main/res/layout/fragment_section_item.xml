@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <variable
@@ -7,30 +10,33 @@
             type="fr.utt.if26.mmarchan.room.entities.SectionEntity" />
         <variable
             name="handler"
-            type="fr.utt.if26.mmarchan.activities.adapters.SectionListAdapter.SectionListClickListener" />
+            type="fr.utt.if26.mmarchan.activities.adapters.SectionListAdapter" />
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical"
+        android:elevation="6dp"
+        android:padding="10dp">
 
         <TextView
-            android:id="@+id/section_text_view"
+            android:id="@+id/section_item_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:text="@{section.name}"
             android:textSize="28sp"
-            android:onLongClick="@{() -> handler.onLongClick(section.id)}" />
+            android:onClick="@{() -> handler.onClick(section.id)}" />
 
-        <!--
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/section_item_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        -->
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/section_item_text_view"
+            tools:listitem="@layout/fragment_auth_issuer_item" />
 
     </LinearLayout>
 

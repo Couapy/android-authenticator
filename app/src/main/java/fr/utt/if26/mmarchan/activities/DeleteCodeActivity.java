@@ -27,7 +27,7 @@ public class DeleteCodeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delete_code);
 
-        int authIssuerId = getIntent().getIntExtra("authIssuerId", 0);
+        int authIssuerId = getIntent().getIntExtra("issuerId", 0);
         authIssuer = authIssuerRepository.getAuthIssuerById(authIssuerId);
 
         textView = findViewById(R.id.code_delete_text_view);

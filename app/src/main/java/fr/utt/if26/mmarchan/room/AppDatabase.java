@@ -16,7 +16,7 @@ import fr.utt.if26.mmarchan.room.daos.SectionDAO;
 import fr.utt.if26.mmarchan.room.entities.AuthIssuerEntity;
 import fr.utt.if26.mmarchan.room.entities.SectionEntity;
 
-@Database(entities = {SectionEntity.class, AuthIssuerEntity.class}, version = 2)
+@Database(entities = {SectionEntity.class, AuthIssuerEntity.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase INSTANCE = null;
     private static final int NUMBER_OF_THREADS = 4;

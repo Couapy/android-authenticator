@@ -33,4 +33,7 @@ public interface AuthIssuerDAO {
 
     @Query("SELECT * FROM auth_issuers WHERE id = :id")
     public AuthIssuerEntity getById(int id);
+
+    @Query("SELECT * FROM auth_issuers WHERE sectionId = :sectionId")
+    public LiveData<List<AuthIssuerEntity>> getBySection(int sectionId);
 }

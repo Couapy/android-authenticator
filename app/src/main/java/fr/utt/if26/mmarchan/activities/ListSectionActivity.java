@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -18,8 +17,6 @@ import fr.utt.if26.mmarchan.room.viewmodels.SectionViewModel;
 
 public class ListSectionActivity extends AppCompatActivity {
 
-
-
     private ActivityListSectionBinding binding;
 
     @Override
@@ -32,7 +29,7 @@ public class ListSectionActivity extends AppCompatActivity {
         viewModel.getAllSections().observe(this, sections -> {
             adapter.submitList(sections);
         });
-        binding.setAdapter(adapter);
+        binding.sectionListRecyclerView.setAdapter(adapter);
     }
 
     @Override
