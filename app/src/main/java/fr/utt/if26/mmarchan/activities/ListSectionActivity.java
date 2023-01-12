@@ -1,15 +1,23 @@
 package fr.utt.if26.mmarchan.activities;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import com.journeyapps.barcodescanner.ScanContract;
+import com.journeyapps.barcodescanner.ScanOptions;
+
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import fr.utt.if26.mmarchan.R;
 import fr.utt.if26.mmarchan.activities.adapters.SectionListAdapter;
@@ -24,6 +32,8 @@ public class ListSectionActivity extends AppCompatActivity {
     private ActivityListSectionBinding binding;
     private WorkspaceRepository repository;
     private WorkspaceEntity workspace;
+    private ActivityResultLauncher<ScanOptions> barcodeLauncher;
+    private ScanOptions barcodeOptions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +42,7 @@ public class ListSectionActivity extends AppCompatActivity {
         repository = new WorkspaceRepository(getApplication());
 
         setupDatabaseAccess();
+        setupQRCodeScanner();
         setTitle("Workspace: " + workspace.name);
 
         SectionViewModel viewModel = new ViewModelProvider(this).get(SectionViewModel.class);
@@ -49,6 +60,46 @@ public class ListSectionActivity extends AppCompatActivity {
         AppDatabase.useDatabase(this, workspace.database, password);
     }
 
+    private void setupQRCodeScanner() {
+        barcodeLauncher = registerForActivityResult(
+                new ScanContract(),
+                result -> {
+                    if (result.getContents() != null) {
+
+                        String decodedURI = result.getContents();
+                        try {
+                            URI uri = new URI(decodedURI);
+                            if (!uri.getScheme().equals("otpauth") && !uri.getScheme().equals("totp")) {
+                                throw new Exception("Invalid link");
+                            }
+                            Uri query = Uri.parse(decodedURI);
+                            String name = query.getQueryParameter("issuer");
+                            String user = null;
+                            String token = query.getQueryParameter("secret");
+                            String[] hostname = uri.getPath().split(":");
+                            if (hostname.length >= 2) {
+                                user = hostname[1];
+                            }
+
+                            Intent intent = new Intent(ListSectionActivity.this, AddCodeActivity.class);
+                            intent.putExtra("name", name);
+                            intent.putExtra("user", user);
+                            intent.putExtra("token", token);
+                            startActivity(intent);
+                        } catch (URISyntaxException e) {
+                            e.printStackTrace();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+        barcodeOptions = new ScanOptions();
+        barcodeOptions.setPrompt("Scan a QR Code");
+        barcodeOptions.setBeepEnabled(false);
+        barcodeOptions.setBarcodeImageEnabled(true);
+        barcodeOptions.setOrientationLocked(false);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -57,7 +108,7 @@ public class ListSectionActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)  {
+    public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.main_menu_add_section:
                 addSection();
@@ -85,10 +136,9 @@ public class ListSectionActivity extends AppCompatActivity {
     }
 
     private void scanQRCode() {
-        /* TODO */
-        Toast.makeText(this, "TODO", Toast.LENGTH_SHORT).show();
+        barcodeLauncher.launch(barcodeOptions);
     }
-    
+
     private void deleteWorkspace() {
         Intent intent = new Intent(ListSectionActivity.this, DeleteWorkspaceActivity.class);
         intent.putExtra("workspaceId", workspace.id);

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -53,10 +54,12 @@ public class AddCodeActivity extends AppCompatActivity {
         // Create my watchers
         TextWatcher textWatcher = new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
             public void afterTextChanged(Editable s) {
@@ -98,6 +101,12 @@ public class AddCodeActivity extends AppCompatActivity {
             }
             adapter.notifyDataSetChanged();
         });
+
+        // Add intent data
+        Intent intent = getIntent();
+        inputProvider.setText(intent.getStringExtra("name"));
+        inputUsername.setText(intent.getStringExtra("user"));
+        inputToken.setText(intent.getStringExtra("token"));
 
         // Add listeners
         inputProvider.addTextChangedListener(textWatcher);
